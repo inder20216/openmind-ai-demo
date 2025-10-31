@@ -2218,24 +2218,32 @@ function checkExistingSession() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     const email = urlParams.get('email');
+    const name = urlParams.get('name');
     
     if (token && email) {
         userSession.token = token;
         userSession.email = email;
+        userSession.name = name || email.split('@')[0];
         userSession.isAuthenticated = true;
+        
         localStorage.setItem('sessionToken', token);
         localStorage.setItem('userEmail', email);
+        localStorage.setItem('userName', userSession.name);
+        
         window.history.replaceState({}, document.title, window.location.pathname);
-        updateUIForLoggedInUser(email);
-        alert('Login successful! Welcome ' + email);
+        updateUIForLoggedInUser(userSession.name, email);
+        alert('Login successful! Welcome ' + userSession.name);
     } else {
         const savedToken = localStorage.getItem('sessionToken');
         const savedEmail = localStorage.getItem('userEmail');
+        const savedName = localStorage.getItem('userName');
+        
         if (savedToken && savedEmail) {
             userSession.token = savedToken;
             userSession.email = savedEmail;
+            userSession.name = savedName || savedEmail.split('@')[0];
             userSession.isAuthenticated = true;
-            updateUIForLoggedInUser(savedEmail);
+            updateUIForLoggedInUser(userSession.name, savedEmail);
         }
     }
 }
@@ -2261,11 +2269,23 @@ function logout() {
     showPage('home');
 }
 
-function updateUIForLoggedInUser(email) {
-    document.getElementById('userEmail').textContent = email;
-    document.getElementById('userInfo').classList.add('active');
+function updateUIForLoggedInUser(name, email) {
     document.getElementById('loginBtn').style.display = 'none';
     document.getElementById('signupBtn').style.display = 'none';
+    document.getElementById('userProfile').style.display = 'block';
+    
+    const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    
+    document.getElementById('userName').textContent = name;
+    document.getElementById('userAvatar').textContent = initials;
+    document.getElementById('dropdownUserName').textContent = name;
+    document.getElementById('dropdownUserEmail').textContent = email;
+    document.getElementById('welcomeUserName').textContent = name;
+    
+    if (!localStorage.getItem('hasSeenWelcome')) {
+        document.getElementById('welcomeModal').classList.add('active');
+        localStorage.setItem('hasSeenWelcome', 'true');
+    }
 }
 
 function showAuthModal() {
