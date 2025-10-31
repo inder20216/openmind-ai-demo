@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Mind Services - AI Chatbot Marketplace</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 100%);
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
+        .header {
+            background: rgba(20, 20, 40, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 0;
+            box-shadow: 0 4px 30px rgba(0, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #00ffff, #0080ff, #8000ff);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, #00ffff, transparent, #8000ff, transparent, #00ffff);
+            border-radius: 17px;
+            z-index: -1;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .logo h1 {
+            background: linear-gradient(135deg, #00ffff, #0080ff, #8000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 32px;
+            font-weight: 700;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: #a0a0b8;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #ffffff;
+        }
+
+        .nav-menu a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00ffff, #8000ff);
+            border-radius: 1px;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #a0a0b8;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-color: #00ffff;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8000ff, #00ffff);
+            color: white;
+            box-shadow: 0 4px 15px rgba(128, 0, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(128, 0, 255, 0.4);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 0 60px 0;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(128, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(0, 128, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h2 {
+            font-size: 58px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ffffff, #00ffff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 22px;
+            margin-bottom: 40px;
+            color: #a0a0b8;
+            font-weight: 400;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        /* Bot Marketplace Styles */
+        .marketplace-section {
+            padding: 60px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-header h3 {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #00ffff, #8000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: #a0a0b8;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #a0a0b8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #00ffff, #8000ff);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .bots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .bot-card {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bot-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+            border-color: #00ffff;
+        }
+
+        .bot-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .bot-card h4 {
+            font-size: 20px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .bot-industry {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(0, 255, 255, 0.2);
+            border-radius: 12px;
+            font-size: 12px;
+            color: #00ffff;
+            margin-bottom: 12px;
+        }
+
+        .bot-features {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .bot-features li {
+            padding: 6px 0;
+            color: #a0a0b8;
+            font-size: 14px;
+            display: flex;
+            align-items: start;
+            gap: 8px;
+        }
+
+        .bot-features li:before {
+            content: "→";
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        /* Demo Page Styles */
+        .demo-container {
+            padding: 60px 0;
+            min-height: calc(100vh - 95px);
+        }
+
+        .demo-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .demo-sidebar {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            height: fit-content;
+            position: sticky;
+            top: 115px;
+        }
+
+        .demo-sidebar h4 {
+            color: #00ffff;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .bot-selector {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .bot-selector option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .sample-prompts {
+            margin-top: 20px;
+        }
+
+        .sample-prompts button {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #a0a0b8;
+            cursor: pointer;
+            margin-bottom: 10px;
+            text-align: left;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .sample-prompts button:hover {
+            background: rgba(0, 255, 255, 0.2);
+            color: white;
+            border-color: #00ffff;
+        }
+
+        .chat-interface {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            height: 700px;
+        }
+
+        .chat-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        .chat-status {
+            color: #00ff88;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .chat-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .message-avatar.bot {
+            background: linear-gradient(135deg, #00ffff, #8000ff);
+        }
+
+        .message-avatar.user {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 16px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .chat-message.bot .message-bubble {
+            background: rgba(0, 255, 255, 0.15);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            color: #ffffff;
+        }
+
+        .chat-message.user .message-bubble {
+            background: linear-gradient(135deg, #8000ff, #00ffff);
+            color: white;
+        }
+
+        .chat-input-area {
+            padding: 20px 25px;
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .file-upload-zone {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(0, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-zone:hover {
+            background: rgba(0, 255, 255, 0.1);
+            border-color: #00ffff;
+        }
+
+        .file-upload-zone i {
+            font-size: 32px;
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .voice-btn, .send-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .voice-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #a0a0b8;
+        }
+
+        .voice-btn:hover {
+            background: rgba(0, 255, 255, 0.2);
+            color: #00ffff;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #00ffff, #8000ff);
+            color: white;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.4);
+        }
+
+        /* About Page Styles */
+        .about-content {
+            padding: 80px 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .about-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #00ffff, #8000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .chat-demo {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+            border-radius: 25px;
+            padding: 40px;
+            margin: 40px 0;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .chat-demo .chat-message {
+            margin-bottom: 20px;
+        }
+
+        .chat-demo .message-bubble {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 18px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .chat-demo .chat-message.customer {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .chat-demo .chat-message.customer .message-bubble {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-demo .chat-message.bot {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .chat-demo .chat-message.bot .message-bubble {
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            color: white;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .customer .message-sender {
+            color: #a0a0b8;
+        }
+
+        .bot .message-sender {
+            color: #00ffff;
+        }
+
+        /* Tutorial Page Styles */
+        .tutorial-content {
+            padding: 80px 0;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            margin: 40px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Contact Page Styles */
+        .contact-content {
+            padding: 80px 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+            border-radius: 25px;
+            padding: 40px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Auth Pages Styles */
+        .auth-content {
+            padding: 80px 0;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .auth-form {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+            border-radius: 25px;
+            padding: 40px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            color: #a0a0b8;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .divider span {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            top: 80%;
+            left: 50%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 968px) {
+            .demo-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h2 {
+                font-size: 42px;
+            }
+
+            .hero p {
+                font-size: 18px;
+                padding: 0 20px;
+            }
+
+            .bots-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chat-interface {
+                height: 600px;
+            }
+
+            .message-bubble {
+                max-width: 85%;
+            }
+        }
+    
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" onclick="showPage('home')">
+                    <div class="logo-icon">OM</div>
+                    <h1>Open Mind's AI Bots</h1>
+                </div>
+                
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#" onclick="showPage('home')" class="nav-link active">Ai Home</a></li>
+                        <li><a href="#" onclick="showPage('demo')" class="nav-link">Try Demo</a></li>
+                        <li><a href="#" onclick="showPage('about')" class="nav-link">About</a></li>
+                        <li><a href="#" onclick="showPage('tutorial')" class="nav-link">Tutorial</a></li>
+                        <li><a href="#" onclick="showPage('contact')" class="nav-link">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="nav-actions">
+                    <a href="#" onclick="showPage('login')" class="btn btn-outline">Login</a>
+                    <a href="#" onclick="showPage('signup')" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Home/Marketplace Page -->
+    <div id="home" class="page active">
+        <section class="hero fade-in">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>Next-Gen Multibusiness AI Assistant Bots</h2>
+                    <p>Test AI assistants live, right now. Transform your business with instant, intelligent customer support.</p>
+                    <button onclick="showPage('demo')" class="btn btn-primary" style="font-size: 16px; padding: 15px 35px;">
+                        <i class="fas fa-robot"></i>
+                        Try Live Demo
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="marketplace-section">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Choose Your Industry Bot</h3>
+                    <p>20 specialized AI assistants ready to transform your business</p>
+                </div>
+
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterBots('All')">All</button>
+                    <button class="filter-btn" onclick="filterBots('Healthcare')">Healthcare</button>
+                    <button class="filter-btn" onclick="filterBots('Retail')">Retail</button>
+                    <button class="filter-btn" onclick="filterBots('Education')">Education</button>
+                    <button class="filter-btn" onclick="filterBots('Finance')">Finance</button>
+                    <button class="filter-btn" onclick="filterBots('Real Estate')">Real Estate</button>
+                    <button class="filter-btn" onclick="filterBots('Legal')">Legal</button>
+                    <button class="filter-btn" onclick="filterBots('Hospitality')">Hospitality</button>
+                    <button class="filter-btn" onclick="filterBots('Manufacturing')">Manufacturing</button>
+                    <button class="filter-btn" onclick="filterBots('General')">General</button>
+                </div>
+
+                <div class="bots-grid" id="botsGrid">
+                    <!-- Healthcare Bots -->
+                    <div class="bot-card" data-industry="Healthcare" onclick="selectBot('MediAssist Pro')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #ff4757, #ff6348);">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <span class="bot-industry">Healthcare</span>
+                        <h4>MediAssist Pro</h4>
+                        <ul class="bot-features">
+                            <li>24/7 patient inquiry handling</li>
+                            <li>Medical information support</li>
+                            <li>Appointment coordination</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <div class="bot-card" data-industry="Healthcare" onclick="selectBot('HealthAdmin Bot')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #ff4757, #ff6348);">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <span class="bot-industry">Healthcare</span>
+                        <h4>HealthAdmin Bot</h4>
+                        <ul class="bot-features">
+                            <li>Smart appointment scheduling</li>
+                            <li>Automated reminders</li>
+                            <li>Calendar integration</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <div class="bot-card" data-industry="Healthcare" onclick="selectBot('MedDoc Analyzer')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #ff4757, #ff6348);">
+                            <i class="fas fa-file-medical"></i>
+                        </div>
+                        <span class="bot-industry">Healthcare</span>
+                        <h4>MedDoc Analyzer</h4>
+                        <ul class="bot-features">
+                            <li>Medical report interpretation</li>
+                            <li>Lab result insights</li>
+                            <li>Medical terminology help</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <!-- Retail Bots -->
+                    <div class="bot-card" data-industry="Retail" onclick="selectBot('ShopMate AI')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #a55eea, #8854d0);">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <span class="bot-industry">Retail</span>
+                        <h4>ShopMate AI</h4>
+                        <ul class="bot-features">
+                            <li>Smart product recommendations</li>
+                            <li>Personalized shopping experience</li>
+                            <li>Product discovery assistant</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <div class="bot-card" data-industry="Retail" onclick="selectBot('InventoryIQ')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #a55eea, #8854d0);">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <span class="bot-industry">Retail</span>
+                        <h4>InventoryIQ</h4>
+                        <ul class="bot-features">
+                            <li>Real-time stock tracking</li>
+                            <li>Automated reorder alerts</li>
+                            <li>Supply chain optimization</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <div class="bot-card" data-industry="Retail" onclick="selectBot('ReturnEase Bot')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #a55eea, #8854d0);">
+                            <i class="fas fa-undo"></i>
+                        </div>
+                        <span class="bot-industry">Retail</span>
+                        <h4>ReturnEase Bot</h4>
+                        <ul class="bot-features">
+                            <li>Automated return processing</li>
+                            <li>Instant refund handling</li>
+                            <li>Policy guidance support</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <!-- Education Bots -->
+                    <div class="bot-card" data-industry="Education" onclick="selectBot('EduGuide')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #3742fa, #5352ed);">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <span class="bot-industry">Education</span>
+                        <h4>EduGuide</h4>
+                        <ul class="bot-features">
+                            <li>Student admission assistance</li>
+                            <li>Course information guide</li>
+                            <li>Virtual campus tours</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <div class="bot-card" data-industry="Education" onclick="selectBot('HomeworkHelper')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #3742fa, #5352ed);">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <span class="bot-industry">Education</span>
+                        <h4>HomeworkHelper</h4>
+                        <ul class="bot-features">
+                            <li>Assignment support & guidance</li>
+                            <li>Concept explanation</li>
+                            <li>Study resource finder</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <div class="bot-card" data-industry="Education" onclick="selectBot('CampusInfo Bot')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #3742fa, #5352ed);">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <span class="bot-industry">Education</span>
+                        <h4>CampusInfo Bot</h4>
+                        <ul class="bot-features">
+                            <li>University information desk</li>
+                            <li>Event updates & schedules</li>
+                            <li>FAQ handling system</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <!-- Finance Bots -->
+                    <div class="bot-card" data-industry="Finance" onclick="selectBot('FinAdvisor')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #26de81, #20bf6b);">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <span class="bot-industry">Finance</span>
+                        <h4>FinAdvisor</h4>
+                        <ul class="bot-features">
+                            <li>Personal financial planning</li>
+                            <li>Investment guidance & tips</li>
+                            <li>Budget analysis tools</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <div class="bot-card" data-industry="Finance" onclick="selectBot('InvoiceBot')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #26de81, #20bf6b);">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <span class="bot-industry">Finance</span>
+                        <h4>InvoiceBot</h4>
+                        <ul class="bot-features">
+                            <li>Automated billing system</li>
+                            <li>Payment tracking alerts</li>
+                            <li>Invoice generation tool</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <!-- Real Estate Bots -->
+                    <div class="bot-card" data-industry="Real Estate" onclick="selectBot('PropertyScout')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #fd9644, #fa8231);">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="bot-industry">Real Estate</span>
+                        <h4>PropertyScout</h4>
+                        <ul class="bot-features">
+                            <li>Smart listing recommendations</li>
+                            <li>Property matching engine</li>
+                            <li>Virtual tour scheduling</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <div class="bot-card" data-industry="Real Estate" onclick="selectBot('LeaseAssist')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #fd9644, #fa8231);">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <span class="bot-industry">Real Estate</span>
+                        <h4>LeaseAssist</h4>
+                        <ul class="bot-features">
+                            <li>Rental inquiry management</li>
+                            <li>Lease information support</li>
+                            <li>Tenant assistance 24/7</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <!-- Legal Bots -->
+                    <div class="bot-card" data-industry="Legal" onclick="selectBot('LegalEase')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <span class="bot-industry">Legal</span>
+                        <h4>LegalEase</h4>
+                        <ul class="bot-features">
+                            <li>Document drafting assistant</li>
+                            <li>Legal template library</li>
+                            <li>Compliance guidance tool</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <div class="bot-card" data-industry="Legal" onclick="selectBot('CaseTracker')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                            <i class="fas fa-gavel"></i>
+                        </div>
+                        <span class="bot-industry">Legal</span>
+                        <h4>CaseTracker</h4>
+                        <ul class="bot-features">
+                            <li>Real-time case updates</li>
+                            <li>Client communication hub</li>
+                            <li>Deadline tracking system</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <!-- Hospitality Bots -->
+                    <div class="bot-card" data-industry="Hospitality" onclick="selectBot('HotelConcierge')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #fc5c65, #eb3b5a);">
+                            <i class="fas fa-concierge-bell"></i>
+                        </div>
+                        <span class="bot-industry">Hospitality</span>
+                        <h4>HotelConcierge</h4>
+                        <ul class="bot-features">
+                            <li>Instant booking assistance</li>
+                            <li>Amenity information guide</li>
+                            <li>24/7 guest services</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <div class="bot-card" data-industry="Hospitality" onclick="selectBot('DineReserve')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #fc5c65, #eb3b5a);">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <span class="bot-industry">Hospitality</span>
+                        <h4>DineReserve</h4>
+                        <ul class="bot-features">
+                            <li>Restaurant reservations</li>
+                            <li>Menu inquiry support</li>
+                            <li>Special request handling</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <!-- Manufacturing Bots -->
+                    <div class="bot-card" data-industry="Manufacturing" onclick="selectBot('SupplyChainGPT')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #778ca3, #4b6584);">
+                            <i class="fas fa-industry"></i>
+                        </div>
+                        <span class="bot-industry">Manufacturing</span>
+                        <h4>SupplyChainGPT</h4>
+                        <ul class="bot-features">
+                            <li>Logistics coordination</li>
+                            <li>Real-time supply tracking</li>
+                            <li>Vendor management system</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <div class="bot-card" data-industry="Manufacturing" onclick="selectBot('QualityCheck AI')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #778ca3, #4b6584);">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <span class="bot-industry">Manufacturing</span>
+                        <h4>QualityCheck AI</h4>
+                        <ul class="bot-features">
+                            <li>Automated defect reporting</li>
+                            <li>Quality assurance tools</li>
+                            <li>Inspection automation</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+
+                    <!-- General Business Bot -->
+                    <div class="bot-card" data-industry="General" onclick="selectBot('BizAssist Universal')">
+                        <div class="bot-icon" style="background: linear-gradient(135deg, #00d2ff, #3a7bd5);">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <span class="bot-industry">General Business</span>
+                        <h4>BizAssist Universal</h4>
+                        <ul class="bot-features">
+                            <li>Multi-purpose support</li>
+                            <li>Business automation tools</li>
+                            <li>Task management system</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">Test Now</button>
+                    </div>
+                </div>
+
+                <!-- Integration & Deployment Section -->
+                <section style="padding: 60px 0; background: linear-gradient(145deg, rgba(26, 26, 46, 0.5), rgba(22, 33, 62, 0.5)); margin: 40px 0; border-radius: 30px;">
+                    <div class="section-header">
+                        <h3>Deploy Anywhere, Integrate Everything</h3>
+                        <p>Connect your chatbot to your existing tools and platforms</p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 40px;">
+                        <!-- WhatsApp -->
+                        <div style="background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8)); border-radius: 20px; padding: 30px; border: 1px solid rgba(0, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#00ffff';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(0, 255, 255, 0.2)';">
+                            <i class="fab fa-whatsapp" style="font-size: 48px; color: #25D366; margin-bottom: 15px;"></i>
+                            <h4 style="color: #ffffff; margin-bottom: 10px;">WhatsApp Business</h4>
+                            <p style="color: #a0a0b8; font-size: 14px; line-height: 1.6;">Deploy your bot directly on WhatsApp for customer support and engagement</p>
+                        </div>
+
+                        <!-- CRM Integration -->
+                        <div style="background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8)); border-radius: 20px; padding: 30px; border: 1px solid rgba(0, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#00ffff';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(0, 255, 255, 0.2)';">
+                            <i class="fas fa-users-cog" style="font-size: 48px; color: #FF6B6B; margin-bottom: 15px;"></i>
+                            <h4 style="color: #ffffff; margin-bottom: 10px;">CRM Systems</h4>
+                            <p style="color: #a0a0b8; font-size: 14px; line-height: 1.6;">Integrate with Salesforce, HubSpot, Zoho, and custom CRM platforms</p>
+                        </div>
+
+                        <!-- Email Integration -->
+                        <div style="background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8)); border-radius: 20px; padding: 30px; border: 1px solid rgba(0, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#00ffff';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(0, 255, 255, 0.2)';">
+                            <i class="fas fa-envelope-open-text" style="font-size: 48px; color: #4ECDC4; margin-bottom: 15px;"></i>
+                            <h4 style="color: #ffffff; margin-bottom: 10px;">Email Support</h4>
+                            <p style="color: #a0a0b8; font-size: 14px; line-height: 1.6;">Auto-respond to emails and route complex queries to your team</p>
+                        </div>
+
+                        <!-- Slack Integration -->
+                        <div style="background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8)); border-radius: 20px; padding: 30px; border: 1px solid rgba(0, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#00ffff';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(0, 255, 255, 0.2)';">
+                            <i class="fab fa-slack" style="font-size: 48px; color: #E01E5A; margin-bottom: 15px;"></i>
+                            <h4 style="color: #ffffff; margin-bottom: 10px;">Slack & Teams</h4>
+                            <p style="color: #a0a0b8; font-size: 14px; line-height: 1.6;">Internal support bot for employee queries and HR automation</p>
+                        </div>
+
+                        <!-- Website Embed -->
+                        <div style="background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8)); border-radius: 20px; padding: 30px; border: 1px solid rgba(0, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#00ffff';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(0, 255, 255, 0.2)';">
+                            <i class="fas fa-code" style="font-size: 48px; color: #A8E6CF; margin-bottom: 15px;"></i>
+                            <h4 style="color: #ffffff; margin-bottom: 10px;">Website Widget</h4>
+                            <p style="color: #a0a0b8; font-size: 14px; line-height: 1.6;">Simple embed code to add chat widget to any website</p>
+                        </div>
+
+                        <!-- SMS Integration -->
+                        <div style="background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8)); border-radius: 20px; padding: 30px; border: 1px solid rgba(0, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#00ffff';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(0, 255, 255, 0.2)';">
+                            <i class="fas fa-sms" style="font-size: 48px; color: #FFD93D; margin-bottom: 15px;"></i>
+                            <h4 style="color: #ffffff; margin-bottom: 10px;">SMS/Text</h4>
+                            <p style="color: #a0a0b8; font-size: 14px; line-height: 1.6;">Respond to customer texts via Twilio integration</p>
+                        </div>
+
+                        <!-- API Integration -->
+                        <div style="background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8)); border-radius: 20px; padding: 30px; border: 1px solid rgba(0, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#00ffff';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(0, 255, 255, 0.2)';">
+                            <i class="fas fa-plug" style="font-size: 48px; color: #C77DFF; margin-bottom: 15px;"></i>
+                            <h4 style="color: #ffffff; margin-bottom: 10px;">Custom API</h4>
+                            <p style="color: #a0a0b8; font-size: 14px; line-height: 1.6;">Connect to any system via RESTful API integration</p>
+                        </div>
+
+                        <!-- n8n Workflows -->
+                        <div style="background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8)); border-radius: 20px; padding: 30px; border: 1px solid rgba(0, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#00ffff';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(0, 255, 255, 0.2)';">
+                            <i class="fas fa-project-diagram" style="font-size: 48px; color: #FF6B9D; margin-bottom: 15px;"></i>
+                            <h4 style="color: #ffffff; margin-bottom: 10px;">n8n Automation</h4>
+                            <p style="color: #a0a0b8; font-size: 14px; line-height: 1.6;">Visual workflow builder for complex business logic</p>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 40px;">
+                        <button onclick="showPage('contact')" class="btn btn-primary" style="font-size: 16px; padding: 15px 35px;">
+                            <i class="fas fa-paper-plane"></i>
+                            Request Custom Integration
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </div>
+
+    <!-- Demo Page -->
+    <div id="demo" class="page">
+        <div class="container">
+            <div class="demo-container fade-in">
+                <div class="section-header">
+                    <h3>Interactive Bot Demo</h3>
+                    <p>Test any chatbot with your own data - documents, URLs, or custom questions</p>
+                </div>
+
+                <div class="demo-layout">
+                    <div class="demo-sidebar">
+                        <h4><i class="fas fa-robot"></i> Select Bot</h4>
+                        <select class="bot-selector" id="botSelector" onchange="changeBotDemo()">
+                            <option value="MediAssist Pro">MediAssist Pro (Healthcare)</option>
+                            <option value="HealthAdmin Bot">HealthAdmin Bot (Healthcare)</option>
+                            <option value="MedDoc Analyzer">MedDoc Analyzer (Healthcare)</option>
+                            <option value="ShopMate AI">ShopMate AI (Retail)</option>
+                            <option value="InventoryIQ">InventoryIQ (Retail)</option>
+                            <option value="ReturnEase Bot">ReturnEase Bot (Retail)</option>
+                            <option value="EduGuide">EduGuide (Education)</option>
+                            <option value="HomeworkHelper">HomeworkHelper (Education)</option>
+                            <option value="CampusInfo Bot">CampusInfo Bot (Education)</option>
+                            <option value="FinAdvisor">FinAdvisor (Finance)</option>
+                            <option value="InvoiceBot">InvoiceBot (Finance)</option>
+                            <option value="PropertyScout">PropertyScout (Real Estate)</option>
+                            <option value="LeaseAssist">LeaseAssist (Real Estate)</option>
+                            <option value="LegalEase">LegalEase (Legal)</option>
+                            <option value="CaseTracker">CaseTracker (Legal)</option>
+                            <option value="HotelConcierge">HotelConcierge (Hospitality)</option>
+                            <option value="DineReserve">DineReserve (Hospitality)</option>
+                            <option value="SupplyChainGPT">SupplyChainGPT (Manufacturing)</option>
+                            <option value="QualityCheck AI">QualityCheck AI (Manufacturing)</option>
+                            <option value="BizAssist Universal">BizAssist Universal (General)</option>
+                        </select>
+
+                        <div class="sample-prompts">
+                            <h4><i class="fas fa-lightbulb"></i> Try These</h4>
+                            <button onclick="useSamplePrompt('How do I schedule an appointment?')">How do I schedule an appointment?</button>
+                            <button onclick="useSamplePrompt('What are your working hours?')">What are your working hours?</button>
+                            <button onclick="useSamplePrompt('Help me track my order')">Help me track my order</button>
+                            <button onclick="useSamplePrompt('I need support with my account')">I need support with my account</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-interface">
+                        <div class="chat-header">
+                            <h3 id="currentBotName">MediAssist Pro</h3>
+                            <div class="chat-status">
+                                <span class="status-dot"></span>
+                                <span>Online</span>
+                            </div>
+                        </div>
+
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="chat-message bot">
+                                <div class="message-avatar bot">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-bubble">
+                                    Hello! I'm <strong id="botIntroName">MediAssist Pro</strong>, your AI assistant. How can I help you today?
+                                </div>
+                            </div>
+                        </div>
+
+                                            
+                           <div class="chat-input-area">
+                            <!-- Knowledge Base Options (Collapsible) -->
+                            <div style="margin-bottom: 15px;">
+                                <button onclick="toggleKnowledgeOptions()" style="width: 100%; padding: 12px; background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 8px; color: #00ffff; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                                    <span><i class="fas fa-brain"></i> Add Knowledge Base Context</span>
+                                    <i class="fas fa-chevron-down" id="knowledgeToggleIcon"></i>
+                                </button>
+                                
+                                <div id="knowledgeOptions" style="display: none; margin-top: 15px; padding: 20px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.2);">
+                                    <!-- Tab Navigation -->
+                                    <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid rgba(0, 255, 255, 0.2); padding-bottom: 10px;">
+                                        <button class="knowledge-tab active" onclick="switchKnowledgeTab('upload')" id="tab-upload" style="flex: 1; padding: 10px; background: transparent; border: none; color: #00ffff; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 2px solid #00ffff;">
+                                            <i class="fas fa-file-upload"></i> Upload File
+                                        </button>
+                                        <button class="knowledge-tab" onclick="switchKnowledgeTab('text')" id="tab-text" style="flex: 1; padding: 10px; background: transparent; border: none; color: #a0a0b8; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent;">
+                                            <i class="fas fa-align-left"></i> Paste Text
+                                        </button>
+                                        <button class="knowledge-tab" onclick="switchKnowledgeTab('url')" id="tab-url" style="flex: 1; padding: 10px; background: transparent; border: none; color: #a0a0b8; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent;">
+                                            <i class="fas fa-link"></i> Website URL
+                                        </button>
+                                    </div>
+
+                                    <!-- Upload File Tab -->
+                                    <div id="content-upload" class="knowledge-content">
+                                        <div onclick="document.getElementById('knowledgeFileInput').click()" style="cursor: pointer; text-align: center; padding: 30px; border: 2px dashed rgba(0, 255, 255, 0.3); border-radius: 8px; background: rgba(0, 0, 0, 0.2); transition: all 0.3s ease;">
+                                            <i class="fas fa-cloud-upload-alt" style="font-size: 40px; color: #00ffff; margin-bottom: 15px;"></i>
+                                            <p style="font-size: 14px; color: #ffffff; margin-bottom: 5px;">Click to upload document</p>
+                                            <p style="font-size: 12px; color: #a0a0b8;">PDF, DOCX, TXT (Max 10MB)</p>
+                                        </div>
+                                        <input type="file" id="knowledgeFileInput" accept=".pdf,.docx,.txt" style="display: none;" onchange="handleKnowledgeFileUpload(event)">
+                                    </div>
+
+                                    <!-- Paste Text Tab -->
+                                    <div id="content-text" class="knowledge-content" style="display: none;">
+                                        <textarea id="textContextInput" placeholder="Paste any text context here that you want the bot to understand..." style="width: 100%; min-height: 120px; padding: 15px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 8px; color: white; font-size: 13px; resize: vertical; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"></textarea>
+                                        <button onclick="addTextContext()" style="width: 100%; margin-top: 12px; padding: 12px; background: linear-gradient(135deg, #00ffff, #0080ff); border: none; border-radius: 8px; color: white; font-size: 14px; font-weight: 600; cursor: pointer;">
+                                            <i class="fas fa-plus"></i> Add Text Context
+                                        </button>
+                                    </div>
+
+                                    <!-- Website URL Tab -->
+                                    <div id="content-url" class="knowledge-content" style="display: none;">
+                                        <input type="url" id="websiteUrlInput" placeholder="https://example.com" style="width: 100%; padding: 15px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 8px; color: white; font-size: 14px; margin-bottom: 12px;">
+                                        <button onclick="addWebsiteContext()" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #00ffff, #0080ff); border: none; border-radius: 8px; color: white; font-size: 14px; font-weight: 600; cursor: pointer;">
+                                            <i class="fas fa-globe"></i> Extract Website Content
+                                        </button>
+                                    </div>
+
+                                    <!-- Active Context Display -->
+                                    <div id="activeContextDisplay" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(0, 255, 255, 0.2);">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                            <span style="color: #00ffff; font-size: 14px; font-weight: 600;">
+                                                <i class="fas fa-database"></i> Active Context (<span id="contextCount">0</span>)
+                                            </span>
+                                            <button onclick="clearAllContext()" style="padding: 6px 12px; background: transparent; border: 1px solid rgba(255, 68, 68, 0.5); border-radius: 6px; color: #ff4444; font-size: 12px; cursor: pointer;">
+                                                <i class="fas fa-trash"></i> Clear All
+                                            </button>
+                                        </div>
+                                        <div id="activeContextList" style="max-height: 150px; overflow-y: auto;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Chat Input -->
+                            <div class="input-row">
+                                <input 
+                                    type="text" 
+                                    class="chat-input" 
+                                    id="chatInput" 
+                                    placeholder="Type your message..." 
+                                    onkeypress="handleKeyPress(event)"
+                                >
+                                <button class="voice-btn" onclick="toggleVoiceInput()">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <button class="send-btn" onclick="sendMessage()">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page">
+        <div class="container">
+            <div class="about-content fade-in">
+                <div class="about-header">
+                    <h2>About Our AI Chatbots</h2>
+                    <p style="font-size: 18px; color: #a0a0b8; margin-bottom: 20px;">
+                        <strong>Chatbots: always-on, multilingual, AI-driven digital assistants for real-time responses and issue resolution.</strong>
+                    </p>
+                    <p style="font-size: 16px; color: #a0a0b8; line-height: 1.6;">
+                        Ever waited <strong>too long</strong> for a response on a website or had to repeat your query over and over? <strong>Our AI-powered chatbots solve that!</strong> These <strong>always-on, multilingual digital assistants</strong> provide <strong>instant answers, resolve issues, and guide customers 24/7</strong>—no waiting, no frustration!
+                    </p>
+                </div>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <h3 style="color: #00ffff; font-size: 24px; margin-bottom: 20px;">
+                        Why Businesses & Customers Love AI Chatbots
+                    </h3>
+                    <p style="color: #a0a0b8; font-style: italic;">
+                        Below chat between a customer and the bot will clear all questions
+                    </p>
+                </div>
+
+                <div class="chat-demo">
+                    <div class="chat-message customer">
+                        <div>
+                            <div class="message-sender">Customer</div>
+                            <div class="message-bubble">I always have to wait so long for replies. Can't support be faster?</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-message bot">
+                        <div>
+                            <div class="message-sender">AI Chatbot</div>
+                            <div class="message-bubble">Absolutely! I'm an <strong>AI-powered chatbot</strong>, here to give you <strong>instant answers</strong>—no waiting, no frustration!</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-message customer">
+                        <div>
+                            <div class="message-sender">Customer</div>
+                            <div class="message-bubble">Really? What kind of things can you help with?</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-message bot">
+                        <div>
+                            <div class="message-sender">AI Chatbot</div>
+                            <div class="message-bubble">A lot! I can:<br>
+                            • <strong>Answer common questions</strong> instantly<br>
+                            • <strong>Help in multiple languages</strong>—English, Hindi, regional, and many international languages!<br>
+                            • <strong>Solve issues like order tracking & service booking</strong><br>
+                            • <strong>Guide you 24/7</strong>, even when support agents are offline<br>
+                            • <strong>Connect you to a human</strong> when needed</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-message customer">
+                        <div>
+                            <div class="message-sender">Customer</div>
+                            <div class="message-bubble">Oh, so if I have a big issue, I can still talk to a real person?</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-message bot">
+                        <div>
+                            <div class="message-sender">AI Chatbot</div>
+                            <div class="message-bubble">Absolutely! If I can't solve it, I'll <strong>seamlessly connect you</strong> to the right person. No long wait times, no repeating yourself!</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-message customer">
+                        <div>
+                            <div class="message-sender">Customer</div>
+                            <div class="message-bubble">Sounds awesome! Is this useful for businesses too?</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-message bot">
+                        <div>
+                            <div class="message-sender">AI Chatbot</div>
+                            <div class="message-bubble">100%! Businesses love me because:<br>
+                            • <strong>Fewer repetitive queries</strong> for agents<br>
+                            • <strong>Customers get quick resolutions</strong> anytime<br>
+                            • <strong>Increases efficiency</strong> while reducing costs</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-message customer">
+                        <div>
+                            <div class="message-sender">Customer</div>
+                            <div class="message-bubble">That's really cool. So basically, no more waiting for replies?</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-message bot">
+                        <div>
+                            <div class="message-sender">AI Chatbot</div>
+                            <div class="message-bubble">Exactly! <strong>Fast, smart, and always available.</strong> Ready to chat anytime you need help!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="floating-shapes">
+            <div class="shape">
+                <i class="fas fa-comments" style="font-size: 70px; color: #00ffff;"></i>
+            </div>
+            <div class="shape">
+                <i class="fas fa-globe" style="font-size: 60px; color: #8000ff;"></i>
+            </div>
+            <div class="shape">
+                <i class="fas fa-clock" style="font-size: 50px; color: #0080ff;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tutorial Page -->
+    <div id="tutorial" class="page">
+        <div class="container">
+            <div class="tutorial-content fade-in">
+                <h2 style="font-size: 42px; font-weight: 700; background: linear-gradient(135deg, #ffffff, #00ffff, #8000ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px;">
+                    How to Use Our Chatbots
+                </h2>
+                <p style="font-size: 18px; color: #a0a0b8; margin-bottom: 40px;">
+                    Watch this comprehensive tutorial to learn how to set up and customize your AI chatbot
+                </p>
+                
+                <div class="video-container">
+                    <iframe 
+                        src="https://www.youtube.com/embed/Om0JeJ4W3II" 
+                        title="Chatbot Tutorial" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+                <div style="background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8)); border-radius: 25px; padding: 40px; border: 1px solid rgba(0, 255, 255, 0.2); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
+                    <h3 style="color: #00ffff; margin-bottom: 20px; font-size: 24px;">Quick Start Guide</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 10px 0; display: flex; align-items: center; gap: 15px;">
+                            <i class="fas fa-play-circle" style="color: #00ffff; font-size: 20px;"></i>
+                            <span>Choose your industry-specific chatbot from our marketplace</span>
+                        </li>
+                        <li style="padding: 10px 0; display: flex; align-items: center; gap: 15px;">
+                            <i class="fas fa-cog" style="color: #00ffff; font-size: 20px;"></i>
+                            <span>Customize responses and branding to match your business</span>
+                        </li>
+                        <li style="padding: 10px 0; display: flex; align-items: center; gap: 15px;">
+                            <i class="fas fa-code" style="color: #00ffff; font-size: 20px;"></i>
+                            <span>Copy the provided webhook URL for n8n integration</span>
+                        </li>
+                        <li style="padding: 10px 0; display: flex; align-items: center; gap: 15px;">
+                            <i class="fas fa-rocket" style="color: #00ffff; font-size: 20px;"></i>
+                            <span>Deploy and start receiving intelligent customer interactions</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="floating-shapes">
+            <div class="shape">
+                <i class="fas fa-play" style="font-size: 70px; color: #00ffff;"></i>
+            </div>
+            <div class="shape">
+                <i class="fas fa-graduation-cap" style="font-size: 60px; color: #8000ff;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+        <div class="container">
+            <div class="contact-content fade-in">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-size: 42px; font-weight: 700; background: linear-gradient(135deg, #ffffff, #00ffff, #8000ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px;">
+                        Get in Touch
+                    </h2>
+                    <p style="font-size: 18px; color: #a0a0b8;">
+                        Have questions? Need custom solutions? We're here to help!
+                    </p>
+                </div>
+
+                <form class="contact-form" onsubmit="handleContactSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company">Company Name</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required placeholder="Tell us about your project or questions..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">
+                        <i class="fas fa-paper-plane"></i>
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="floating-shapes">
+            <div class="shape">
+                <i class="fas fa-envelope" style="font-size: 70px; color: #00ffff;"></i>
+            </div>
+            <div class="shape">
+                <i class="fas fa-phone" style="font-size: 60px; color: #8000ff;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login" class="page">
+        <div class="container">
+            <div class="auth-content fade-in">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-size: 42px; font-weight: 700; background: linear-gradient(135deg, #ffffff, #00ffff, #8000ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px;">
+                        Welcome Back
+                    </h2>
+                    <p style="font-size: 18px; color: #a0a0b8;">
+                        Sign in to access your chatbot dashboard
+                    </p>
+                </div>
+
+                <form class="auth-form" onsubmit="handleLoginSubmit(event)">
+                    <div class="social-login">
+                        <a href="#" class="social-btn" onclick="handleSocialLogin('Google'); return false;">
+                            <i class="fab fa-google" style="font-size: 20px; color: #EA4335;"></i>
+                            Continue with Google
+                        </a>
+                        <a href="#" class="social-btn" onclick="handleSocialLogin('Microsoft'); return false;">
+                            <i class="fab fa-microsoft" style="font-size: 20px; color: #0078D4;"></i>
+                            Continue with Microsoft
+                        </a>
+                    </div>
+
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" name="password" required>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <label style="display: flex; align-items: center; gap: 8px; color: #a0a0b8; font-size: 14px;">
+                            <input type="checkbox" style="accent-color: #00ffff;">
+                            Remember me
+                        </label>
+                        <a href="#" style="color: #00ffff; text-decoration: none; font-size: 14px;">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; margin-bottom: 20px;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </button>
+
+                    <div style="text-align: center;">
+                        <span style="color: #a0a0b8; font-size: 14px;">Don't have an account? </span>
+                        <a href="#" onclick="showPage('signup'); return false;" style="color: #00ffff; text-decoration: none; font-weight: 600;">Sign up</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="floating-shapes">
+            <div class="shape">
+                <i class="fas fa-user-circle" style="font-size: 70px; color: #00ffff;"></i>
+            </div>
+            <div class="shape">
+                <i class="fas fa-lock" style="font-size: 60px; color: #8000ff;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Page -->
+    <div id="signup" class="page">
+        <div class="container">
+            <div class="auth-content fade-in">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-size: 42px; font-weight: 700; background: linear-gradient(135deg, #ffffff, #00ffff, #8000ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px;">
+                        Join Open Mind Services
+                    </h2>
+                    <p style="font-size: 18px; color: #a0a0b8;">
+                        Create your account to start building amazing chatbots
+                    </p>
+                </div>
+
+                <form class="auth-form" onsubmit="handleSignupSubmit(event)">
+                    <div class="social-login">
+                        <a href="#" class="social-btn" onclick="handleSocialLogin('Google'); return false;">
+                            <i class="fab fa-google" style="font-size: 20px; color: #EA4335;"></i>
+                            Sign up with Google
+                        </a>
+                        <a href="#" class="social-btn" onclick="handleSocialLogin('Microsoft'); return false;">
+                            <i class="fab fa-microsoft" style="font-size: 20px; color: #0078D4;"></i>
+                            Sign up with Microsoft
+                        </a>
+                    </div>
+
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <input type="text" id="first-name" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" id="last-name" name="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-email">Email Address</label>
+                        <input type="email" id="signup-email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company-name">Company Name</label>
+                        <input type="text" id="company-name" name="company" placeholder="Optional">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" name="password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirmPassword" required>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <label style="display: flex; align-items: flex-start; gap: 8px; color: #a0a0b8; font-size: 14px; line-height: 1.5;">
+                            <input type="checkbox" style="accent-color: #00ffff; margin-top: 2px;" required>
+                            I agree to the <a href="#" style="color: #00ffff; text-decoration: none;">Terms of Service</a> and <a href="#" style="color: #00ffff; text-decoration: none;">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; margin-bottom: 20px;">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+
+                    <div style="text-align: center;">
+                        <span style="color: #a0a0b8; font-size: 14px;">Already have an account? </span>
+                        <a href="#" onclick="showPage('login'); return false;" style="color: #00ffff; text-decoration: none; font-weight: 600;">Sign in</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="floating-shapes">
+            <div class="shape">
+                <i class="fas fa-user-plus" style="font-size: 70px; color: #00ffff;"></i>
+            </div>
+            <div class="shape">
+                <i class="fas fa-rocket" style="font-size: 60px; color: #8000ff;"></i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let activeContext = {
+            documents: [],
+            texts: [],
+            urls: []
+        };
+
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                targetPage.classList.add('fade-in');
+            }
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            const navMap = {
+                'home': 0,
+                'demo': 1,
+                'about': 2,
+                'tutorial': 3,
+                'contact': 4
+            };
+
+            if (navMap.hasOwnProperty(pageId)) {
+                navLinks[navMap[pageId]].classList.add('active');
+            }
+
+            window.scrollTo(0, 0);
+        }
+
+        function filterBots(industry) {
+            const botCards = document.querySelectorAll('.bot-card');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            botCards.forEach(card => {
+                if (industry === 'All' || card.getAttribute('data-industry') === industry) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function selectBot(botName) {
+            document.getElementById('botSelector').value = botName;
+            showPage('demo');
+            changeBotDemo();
+        }
+
+        function changeBotDemo() {
+            const selector = document.getElementById('botSelector');
+            const botName = selector.value;
+            document.getElementById('currentBotName').textContent = botName;
+            document.getElementById('botIntroName').textContent = botName;
+            
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class="chat-message bot">
+                    <div class="message-avatar bot">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-bubble">
+                        Hello! I'm <strong>${botName}</strong>, your AI assistant. How can I help you today?
+                    </div>
+                </div>
+            `;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addUserMessage(message);
+                input.value = '';
+                
+                setTimeout(() => {
+                    let contextInfo = '';
+                    const totalContext = activeContext.documents.length + activeContext.texts.length + activeContext.urls.length;
+                    
+                    if (totalContext > 0) {
+                        contextInfo = ` I can see you've provided ${totalContext} context item(s). In production, I would use this information to give more accurate responses.`;
+                    }
+                    
+                    addBotMessage("Thank you for your message! This is a demo interface. In production, I would process your request and provide intelligent responses based on the selected bot's specialty." + contextInfo);
+                }, 1000);
+            }
+        }
+
+        function addUserMessage(text) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message user';
+            messageDiv.innerHTML = `
+                <div class="message-avatar user">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="message-bubble">${text}</div>
+            `;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function addBotMessage(text) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message bot';
+            messageDiv.innerHTML = `
+                <div class="message-avatar bot">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-bubble">${text}</div>
+            `;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function useSamplePrompt(prompt) {
+            document.getElementById('chatInput').value = prompt;
+            sendMessage();
+        }
+
+        function toggleVoiceInput() {
+            alert('Voice input feature will be integrated with Web Speech API in production.');
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                addUserMessage(`📎 Uploaded: ${file.name}`);
+                setTimeout(() => {
+                    addBotMessage(`I've received your file "${file.name}". In production, I would analyze this document and use it to provide context-aware responses.`);
+                }, 1000);
+            }
+        }
+
+        function toggleKnowledgeOptions() {
+            const panel = document.getElementById('knowledgeOptions');
+            const icon = document.getElementById('knowledgeToggleIcon');
+            
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                panel.style.display = 'block';
+                icon.className = 'fas fa-chevron-up';
+            } else {
+                panel.style.display = 'none';
+                icon.className = 'fas fa-chevron-down';
+            }
+        }
+
+        function switchKnowledgeTab(tabName) {
+            document.querySelectorAll('.knowledge-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            document.querySelectorAll('.knowledge-tab').forEach(tab => {
+                tab.style.color = '#a0a0b8';
+                tab.style.borderBottom = '2px solid transparent';
+            });
+            
+            document.getElementById('content-' + tabName).style.display = 'block';
+            
+            const activeTab = document.getElementById('tab-' + tabName);
+            activeTab.style.color = '#00ffff';
+            activeTab.style.borderBottom = '2px solid #00ffff';
+        }
+
+        function handleKnowledgeFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File size must be less than 10MB');
+                return;
+            }
+
+            activeContext.documents.push({
+                name: file.name,
+                size: (file.size / 1024).toFixed(2) + ' KB',
+                type: file.type,
+                file: file
+            });
+
+            addBotMessage(`📎 Document "${file.name}" uploaded. I'll use this context in my responses.`);
+            
+            updateContextDisplay();
+            
+            event.target.value = '';
+        }
+
+        function addTextContext() {
+            const textInput = document.getElementById('textContextInput');
+            const text = textInput.value.trim();
+            
+            if (!text) {
+                alert('Please enter some text');
+                return;
+            }
+
+            activeContext.texts.push({
+                content: text,
+                preview: text.substring(0, 100) + (text.length > 100 ? '...' : '')
+            });
+
+            addBotMessage(`📝 Text context added. I'll reference this information in my responses.`);
+            
+            updateContextDisplay();
+            
+            textInput.value = '';
+        }
+
+        function addWebsiteContext() {
+            const urlInput = document.getElementById('websiteUrlInput');
+            const url = urlInput.value.trim();
+            
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                alert('URL must start with http:// or https://');
+                return;
+            }
+
+            activeContext.urls.push({
+                url: url,
+                domain: new URL(url).hostname
+            });
+
+            addBotMessage(`🌐 Website "${url}" added. I'll extract and use content from this page.`);
+            
+            updateContextDisplay();
+            
+            urlInput.value = '';
+        }
+
+        function updateContextDisplay() {
+            const contextList = document.getElementById('activeContextList');
+            const contextCount = document.getElementById('contextCount');
+            const activeDisplay = document.getElementById('activeContextDisplay');
+            
+            const totalContext = activeContext.documents.length + 
+                                activeContext.texts.length + 
+                                activeContext.urls.length;
+            
+            contextCount.textContent = totalContext;
+            
+            if (totalContext === 0) {
+                activeDisplay.style.display = 'none';
+                return;
+            }
+            
+            activeDisplay.style.display = 'block';
+            
+            let html = '';
+            
+            activeContext.documents.forEach((doc, index) => {
+                html += `
+                    <div style="background: rgba(0, 255, 255, 0.1); padding: 10px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1;">
+                            <div style="color: #00ffff; font-size: 13px; font-weight: 600; margin-bottom: 3px;">
+                                <i class="fas fa-file-alt"></i> ${doc.name}
+                            </div>
+                            <div style="color: #a0a0b8; font-size: 11px;">${doc.size}</div>
+                        </div>
+                        <button onclick="removeContext('documents', ${index})" style="background: transparent; border: none; color: #ff4444; cursor: pointer; font-size: 16px; padding: 5px;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            activeContext.texts.forEach((text, index) => {
+                html += `
+                    <div style="background: rgba(0, 255, 255, 0.1); padding: 10px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1;">
+                            <div style="color: #00ffff; font-size: 13px; font-weight: 600; margin-bottom: 3px;">
+                                <i class="fas fa-align-left"></i> Text Context
+                            </div>
+                            <div style="color: #a0a0b8; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${text.preview}</div>
+                        </div>
+                        <button onclick="removeContext('texts', ${index})" style="background: transparent; border: none; color: #ff4444; cursor: pointer; font-size: 16px; padding: 5px;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            activeContext.urls.forEach((urlData, index) => {
+                html += `
+                    <div style="background: rgba(0, 255, 255, 0.1); padding: 10px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1;">
+                            <div style="color: #00ffff; font-size: 13px; font-weight: 600; margin-bottom: 3px;">
+                                <i class="fas fa-globe"></i> ${urlData.domain}
+                            </div>
+                            <div style="color: #a0a0b8; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${urlData.url}</div>
+                        </div>
+                        <button onclick="removeContext('urls', ${index})" style="background: transparent; border: none; color: #ff4444; cursor: pointer; font-size: 16px; padding: 5px;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            contextList.innerHTML = html;
+        }
+
+        function removeContext(type, index) {
+            activeContext[type].splice(index, 1);
+            updateContextDisplay();
+            addBotMessage('Context item removed.');
+        }
+
+        function clearAllContext() {
+            if (confirm('Are you sure you want to clear all context?')) {
+                activeContext = {
+                    documents: [],
+                    texts: [],
+                    urls: []
+                };
+                updateContextDisplay();
+                addBotMessage('All context cleared.');
+            }
+        }
+
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you soon.');
+            event.target.reset();
+        }
+
+        function handleLoginSubmit(event) {
+            event.preventDefault();
+            alert('Login functionality will be implemented with backend integration.');
+        }
+
+        function handleSignupSubmit(event) {
+            event.preventDefault();
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            alert('Account creation functionality will be implemented with backend integration.');
+        }
+
+        function handleSocialLogin(provider) {
+            alert(`${provider} OAuth integration will be implemented with backend.`);
+        }
+
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(20, 20, 40, 0.98)';
+            } else {
+                header.style.background = 'rgba(20, 20, 40, 0.95)';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            showPage('home');
+            
+            const fileUploadZone = document.getElementById('fileUploadZone');
+            if (fileUploadZone) {
+                fileUploadZone.addEventListener('click', function() {
+                    const fileInput = document.getElementById('fileInput');
+                    if (fileInput) {
+                        fileInput.click();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+                
