@@ -2405,26 +2405,38 @@ function hideAuthModal() {
             `;
         }
 
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                addUserMessage(message);
-                input.value = '';
-                
-                setTimeout(() => {
-                    let contextInfo = '';
-                    const totalContext = activeContext.documents.length + activeContext.texts.length + activeContext.urls.length;
-                    
-                    if (totalContext > 0) {
-                        contextInfo = ` I can see you've provided ${totalContext} context item(s). In production, I would use this information to give more accurate responses.`;
-                    }
-                    
-                    addBotMessage("Thank you for your message! This is a demo interface. In production, I would process your request and provide intelligent responses based on the selected bot's specialty." + contextInfo);
-                }, 1000);
-            }
+    function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    // Start timer on first message
+    if (!demoStarted) {
+        startSessionTimer();
+        demoStarted = true;
+        alert('⏱️ Demo started! You have 15 minutes to explore.');
+    }
+    
+    if (!userSession.isAuthenticated) {
+        showAuthModal();
+        return;
+    }
+
+    addUserMessage(message);
+    input.value = '';
+    
+    setTimeout(() => {
+        let contextInfo = '';
+        const totalContext = activeContext.documents.length + activeContext.texts.length + activeContext.urls.length;
+        
+        if (totalContext > 0) {
+            contextInfo = ` I can see you've provided ${totalContext} context item(s). In production, I would use this information to give more accurate responses.`;
         }
+        
+        addBotMessage("Thank you for your message! This is a demo interface. In production, I would process your request and provide intelligent responses based on the selected bot's specialty." + contextInfo);
+    }, 1000);
+}
 
         function addUserMessage(text) {
             const messagesContainer = document.getElementById('chatMessages');
@@ -2723,6 +2735,8 @@ function hideAuthModal() {
 let sessionStartTime = null;
 let sessionDuration = 15 * 60; // 15 minutes in seconds
 let timerInterval = null;
+let hasExtended = false;
+let demoStarted = false;
 
 // Toggle user dropdown
 function toggleUserDropdown() {
@@ -2771,7 +2785,7 @@ function updateUIForLoggedInUser(email) {
 function startDemo() {
     document.getElementById('welcomeModal').classList.remove('active');
     showPage('demo');
-    startSessionTimer();
+    // Timer will start when user sends first message
 }
 
 // Start session timer
